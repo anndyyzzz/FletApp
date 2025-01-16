@@ -1,9 +1,11 @@
-# Flet app
+# FletApp
 
-A simple Flet app.
+my_app.
 
 To run the app:
 
 ```
-flet run [app_directory]
+cd src
+
+flet run main.py
 ```
