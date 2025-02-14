@@ -1,27 +1,21 @@
 import flet as ft
-from screens.home import home_screen  # นำเข้า home_screen
+from screens.signin import signin_screen
+from screens.home import home_screen
+
+def route_change(event: ft.RouteChangeEvent):
+    """กำหนดเส้นทางเปลี่ยนหน้า"""
+    page = event.page  # ดึง `page` จาก Event
+    page.clean()  # ล้างเนื้อหาก่อนเปลี่ยนหน้า
+    
+    if page.route == "/":
+        page.add(signin_screen(page))  # ส่ง `page` เข้า `signin_screen()`
+    elif page.route == "/home":
+        page.add(home_screen())  # โหลดหน้า Home
 
 def main(page: ft.Page):
-    page.title = "Graduate Tracking System"
-    page.bgcolor = "white"
-    page.scroll = ft.ScrollMode.ALWAYS
-
-    # โหลด Header + Body (ที่สามารถเลื่อนเนื้อหาได้)
-    page.add(home_screen())
-
-    # เพิ่ม CupertinoNavigationBar เป็น App Bar ด้านล่าง
-    page.navigation_bar = ft.CupertinoNavigationBar(
-        bgcolor=ft.Colors.WHITE,  # พื้นหลังสีขาว
-        inactive_color=ft.Colors.GREY,  # สีไอคอนที่ไม่ถูกเลือก
-        active_color=ft.Colors.BLACK,  # สีไอคอนที่ถูกเลือก
-        on_change=lambda e: print("Selected tab:", e.control.selected_index),
-        destinations=[
-            ft.NavigationBarDestination(icon=ft.Icons.CHAT_BUBBLE_OUTLINE, label="Chat"),
-            ft.NavigationBarDestination(icon=ft.Icons.HOME, label="Home"),
-            ft.NavigationBarDestination(icon=ft.Icons.NOTIFICATIONS, label="Notifications"),
-        ]
-    )
-
-    page.update()
+    page.title = "Graduate Student Tracking System"
+    page.bgcolor = "white"  # ✅ ตั้งค่าพื้นหลังเป็นสีขาว
+    page.on_route_change = route_change  # ตรวจจับการเปลี่ยนหน้า
+    page.go("/")  # เปิดแอปที่หน้า Sign In
 
 ft.app(target=main)
